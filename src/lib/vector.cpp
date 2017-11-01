@@ -1,30 +1,24 @@
-#include "Vector.h"
+#include "vector.h"
 #include "math.h"
-#include "Basis.h"
+#include "basis.h"
 #define sqr(x) x*x
 
-namespace Vectors
-{
-	vector::vector(double x0, double y0, double z0)
-	{
-		x = x0; y = y0; z = z0;
+namespace vectors { 
+    template <typename T>
+	T vec3<T>::len() {
+		return sqrt(x * x + y * y + z * z);
 	}
 
-	double vector::Length()
-	{
-		return sqrt(x*x + y*y + z*z);
-	}
-
-	void vector::SetNull()
-	{
+    template <typename T>
+	void vec3<T>::setNull() {
 		x = 0;
 		y = 0;
 		z = 0;
 	}
 
-	void vector::Normalize()
-	{
-		double length = Length();
+    template <typename T>
+	void vec3<T>::normalize() {
+		T length = len();
 		if (! ((x == 0) && (y == 0) && (z == 0)))
 		{
 			x /= length;
@@ -33,10 +27,10 @@ namespace Vectors
 		}
 	}
 
-	void vector::Rotate_M(vector Axis)
-	{
-		double Omega = Axis.Length();
-		double bx, by, bz;
+    template <typename T>
+	void vec3<T>::Rotate_M(vec3 Axis) {
+		T Omega = Axis.Length();
+		T bx, by, bz;
 		Axis.Normalize();
 		bx = (cos(Omega) + (1 - cos(Omega))*sqr(Axis.x))*x + ((1 - cos(Omega))*Axis.x*Axis.y - sin(Omega)*Axis.z)*y + ((1 - cos(Omega))*Axis.x*Axis.z + sin(Omega)*Axis.y)*z;
 		by = ((1 - cos(Omega))*Axis.x*Axis.y + sin(Omega)*Axis.z)*x + (cos(Omega) + (1 - cos(Omega))*sqr(Axis.y))*y + ((1 - cos(Omega))*Axis.y*Axis.z - sin(Omega)*Axis.x)*z;
@@ -46,21 +40,20 @@ namespace Vectors
 		z = bz;
 	}
 
-	void vector::Rotate_D(vector Axis)
-	{
-	}
+    template <typename T>
+	void vec3<T>::Rotate_D(vec3 axis) { }
 
-	void vector::Globalize(basis LocalBasis)
-	{
-		vector buffer=LocalBasis.i*x + LocalBasis.j*y + LocalBasis.k*z;
-		x=buffer.x;
-		y=buffer.y;
-		z=buffer.z;
+    template <class T>
+	void vec3<T>::globalize(basis LocalBasis) {
+		vec3 buffer = LocalBasis.i * x + LocalBasis.j * y + LocalBasis.k * z;
+		x = buffer.x;
+		y = buffer.y;
+		z = buffer.z;
 	}
-
-	void vector::Localize(basis newBasis)
-	{
-		double par[4][3];
+    
+    template <class T>
+	void vec3<T>::localize(basis newBasis) {
+		T par[4][3];
 		par[0][0] = newBasis.i.x;
 		par[0][1] = newBasis.i.y;
 		par[0][2] = newBasis.i.z;
@@ -76,30 +69,23 @@ namespace Vectors
 		par[3][0] = x;
 		par[3][1] = y;
 		par[3][2] = z;
-		for (char i = 0; i < 2; ++i)
-		{
-			for (char j = i + 1; j < 3; ++j)
-			{
-				float coef = par[i][j] / par[i][i];
-				for (char k = i; k < 4; ++k)
-				{
+		for (char i = 0; i < 2; ++i) {
+			for (char j = i + 1; j < 3; ++j) {
+				T coef = par[i][j] / par[i][i];
+				for (char k = i; k < 4; ++k) {
 					par[k][j] = par[k][j] - par[k][i] * coef;
 				}
 			}
 		}
-		for (char i = 2; i > 0; --i)
-		{
-			for (signed char j = i - 1; j > -1; --j)
-			{
-				float coef = par[i][j] / par[i][i];
-				for (char k = 0; k < 4; ++k)
-				{
+		for (char i = 2; i > 0; --i) {
+			for (signed char j = i - 1; j > -1; --j) {
+				T coef = par[i][j] / par[i][i];
+				for (char k = 0; k < 4; ++k) {
 					par[k][j] -= par[k][i] * coef;
 				}
 			}
 		}
-		for (char i = 0; i < 3; ++i)
-		{
+		for (char i = 0; i < 3; ++i) {
 			par[3][i] /= par[i][i];
 		}
 		x = par[3][0];
@@ -107,27 +93,26 @@ namespace Vectors
 		z = par[3][2];
 	}
 
-	double vector::DotProd(vector a, vector b)
-	{
+    template <typename T>
+	T vec3<T>::dotProd(vec3 a, vec3 b) {
 		return a.x*b.x + a.y*b.y + a.z*b.z;
 	}
 
-	vector vector::CrossProd(vector a, vector b)
-	{
-		return vector(a.y * b.z - a.z * b.y,
+    template <class T>
+	vec3<T> vec3<T>::crossProd(vec3 a, vec3 b) {
+		return vec3(a.y * b.z - a.z * b.y,
 		a.z * b.x - a.x * b.z,
 		a.x * b.y - a.y * b.x);
 	}
 
-	double vector::Angle(vector a, vector b)
-	{
-		return acos(vector::DotProd(a, b) / (a.Length()*b.Length()));
+    template <class T>
+	T vec3<T>::angle(vec3 a, vec3 b) {
+		return acos(dotProd(a, b) / (a.length()*b.length()));
 	}
 
-	double &vector::operator[](char index)
-	{
-		switch (index)
-		{
+    template <class T>
+	T &vec3<T>::operator[](char index) {
+		switch (index) {
 			case 1: return x;
 			break;
 			case 2: return y;
@@ -137,24 +122,25 @@ namespace Vectors
 		}
 	}
 
-	vector vector::operator*(double a)
-	{
-		return vector(x*a, y*a, z*a);
+    template <class T>
+	vec3<T> vec3<T>::operator*(T a) {
+		return vec3(x*a, y*a, z*a);
 	}
 
-	vector vector::operator/(double a)
-	{
-		return vector(x / a, y / a, z / a);
+    template <class T>
+	vec3<T> vec3<T>::operator/(T a) {
+		return vec3(x / a, y / a, z / a);
 	}
 
-	vector vector::operator+(vector a)
-	{
-		return vector(x + a.x, y + a.y, z + a.z);
+    template <class T>
+	vec3<T> vec3<T>::operator+(vec3 a) {
+		return vec3(x + a.x, y + a.y, z + a.z);
 	}
 
-	vector vector::operator-(vector a)
-	{
-		return vector(x - a.x, y - a.y, z - a.z);
+    template <class T>
+	vec3<T> vec3<T>::operator-(vec3 a) {
+		return vec3(x - a.x, y - a.y, z - a.z);
 	}
 }
-#undef sqr(x)
+
+#undef sqr

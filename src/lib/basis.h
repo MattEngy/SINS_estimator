@@ -1,7 +1,7 @@
 #pragma once
-#include "Vector.h"
+#include "vector.h"
 
-namespace Vectors
+namespace vectors
 {
 	class basis
 	{

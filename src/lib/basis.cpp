@@ -1,6 +1,6 @@
-#include "Basis.h"
+#include "basis.h"
 
-namespace Vectors
+namespace vectors
 {
 	basis::basis()
 	{
