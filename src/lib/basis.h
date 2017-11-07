@@ -13,5 +13,6 @@ namespace Vectors
 		basis(vector i0, vector j0, vector k0);
 
 		vector &operator[](char index);
+		void rotate(vector axis);
 	};
 }

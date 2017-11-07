@@ -32,4 +32,11 @@ namespace Vectors
 		}
 	}
 
+	void basis::rotate(vector axis)
+	{
+		i.Rotate_M(axis);
+		j.Rotate_M(axis);
+		k.Rotate_M(axis);
+	}
+
 }
