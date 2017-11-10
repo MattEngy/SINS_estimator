@@ -1,6 +1,6 @@
-#include "Vector.h"
+#include "vector.h"
 #include "math.h"
-#include "Basis.h"
+#include "basis.h"
 #define sqr(x) x*x
 
 namespace Vectors
