@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <stdio.h>
-#include "progbar.h"
+#include "../lib/progbar.h"
 #include <ctime>
 #include <unistd.h>
 #include "../lib/filereader_sins.h"

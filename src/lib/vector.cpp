@@ -157,4 +157,4 @@ namespace Vectors
 		return vector(x - a.x, y - a.y, z - a.z);
 	}
 }
-#undef sqr(x)
+#undef sqr

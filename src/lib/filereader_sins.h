@@ -2,12 +2,12 @@
 #include <stdlib.h>
 
 enum col_pos {
-    ACC_X = 0,
+    GYRO_X = 0,
+    GYRO_Y,
+    GYRO_Z,
+    ACC_X,
     ACC_Y,
     ACC_Z,
-    GYRO_X,
-    GYRO_Y,
-    GYRO_Z
 };
 
 bool freadline(FILE *f, double *a, int colcnt) {

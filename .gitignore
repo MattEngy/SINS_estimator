@@ -4,3 +4,4 @@
 !*.cpp
 !*.c
 !/.gitignore
+!/Makefile
