@@ -17,10 +17,21 @@ enum {
 
 #define UPD_PERIOD 0.01
 
-int main(int argc, char **argv)
-{
+double degtorad(double deg) {
+    return deg / 180 * M_PI;
+}
+
+double radtodeg(double rad) {
+    return rad / M_PI * 180;
+}
+
+int main(int argc, char **argv) {
     if (argc == 2) {
-        SINS_t SINS(0, 0, 0, vector(0, 0, 0), basis(), UPD_PERIOD);
+        basis B0;
+        B0.rotate(vector(0, degtorad(-1.954215945840), 0));
+        B0.rotate(vector(degtorad(-3.172652538105), 0, 0));
+        B0.rotate(vector(0, 0, -degtorad(87.123140486447)));
+        SINS_t SINS(degtorad(55.654100000000), degtorad(37.551900000000), 216.899993896484, vector(0, 0, 0), B0, UPD_PERIOD);
         FILE *infile;
         FILE *outfile;
         infile  = fopen(argv[1], "r");
@@ -45,7 +56,15 @@ int main(int argc, char **argv)
             SINS.upd(acc_raw, omega_raw);
             progb.upd(i);
             if ((i % OUT_INTERVAL) == 0) {
-                fprintf(outfile, "%20.10lf%20.10lf%20.10lf\n", SINS.getlambda(), SINS.getfi(), SINS.geth());
+                double fi         = radtodeg(SINS.getfi()),
+                       lambda     = radtodeg(SINS.getlambda()),
+                       fi_sns     = indata[FI_SNS],
+                       lambda_sns = indata[LAMBDA_SNS],
+                       dfi        = fi - fi_sns,
+                       dlambda    = lambda - lambda_sns;
+                fprintf(outfile,
+                        "%20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf\n",
+                        fi, lambda, fi_sns, lambda_sns, dfi, dlambda);
             }
         }
         printf("\n");

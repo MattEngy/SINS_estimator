@@ -8,6 +8,8 @@ enum col_pos {
     ACC_X,
     ACC_Y,
     ACC_Z,
+    FI_SNS = 9,
+    LAMBDA_SNS = 10
 };
 
 bool freadline(FILE *f, double *a, int colcnt) {
