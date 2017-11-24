@@ -37,10 +37,10 @@ int main(int argc, char **argv) {
         infile  = fopen(argv[1], "r");
         outfile = fopen("out.txt", "w");
         int i;
-        char *dummy = NULL;
-        size_t linemaxlen = 255;
+        const int linemaxlen = 1024;
+        char dummy[linemaxlen];
         printf("Pre-scanning file ...\n");
-        for (i = 0; !feof(infile) && getline(&dummy, &linemaxlen, infile); ) {
+        for (i = 0; fgets(dummy, linemaxlen, infile) != NULL; ) {
            i++;
         }
         printf("%d lines found\n", i);
@@ -48,9 +48,8 @@ int main(int argc, char **argv) {
         progb.upd(0);
         rewind(infile);
         double indata[COLS_CNT];
-        for (i = 0; !feof(infile); ) {
+        for (i = 0; freadline(infile, indata, COLS_CNT); ) {
             i++;
-            freadline(infile, indata, COLS_CNT);
             vector acc_raw  (indata[ACC_X] , indata[ACC_Y] , indata[ACC_Z] ),
                    omega_raw(indata[GYRO_X], indata[GYRO_Y], indata[GYRO_Z]);
             SINS.upd(acc_raw, omega_raw);

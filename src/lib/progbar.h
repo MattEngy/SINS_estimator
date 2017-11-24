@@ -15,7 +15,7 @@ class progbar_t
 			_bar = new char[barlen + 3];
 			_bar[0] = '|';
 			for (int i = 1; i <= barlen; i++) {
-                        	_bar[i] = '=';
+                        	_bar[i] = '-';
 			}
 			_bar[barlen + 1] = '|';
 			_bar[barlen + 2] = '\0';

@@ -12,11 +12,24 @@ enum col_pos {
     LAMBDA_SNS = 10
 };
 
+#define MAXLEN 1024
+
 bool freadline(FILE *f, double *a, int colcnt) {
-     for (int i = 0; i < colcnt; i++) {
-        if (fscanf(f, "%lf", &(a[i])) == 0) {
-            return false;
+    char str[MAXLEN],
+         *strptr = str,
+         *curend;
+    int i;
+    if (fgets(strptr, MAXLEN, f)) {
+        double dbuf = strtod(strptr, &curend);
+        for (int i = 0; (str == curend) || (i < colcnt); ++i) {
+            a[i] = dbuf;
+            strptr = curend;
+            dbuf = strtod(strptr, &curend);
         }
-     }
-     return true;
+        return true;
+    }
+
+    return false;
 }
+
+#undef MAXLEN
