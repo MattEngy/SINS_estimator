@@ -58,15 +58,19 @@ int main(int argc, char **argv) {
         SINS.upd(acc_raw, omega_raw);
         progb.upd(i);
         if ((i % OUT_INTERVAL) == 0) {
-            double fi         = radtodeg(SINS.getfi()),
-                   lambda     = radtodeg(SINS.getlambda()),
-                   fi_sns     = indata[FI_SNS],
-                   lambda_sns = indata[LAMBDA_SNS],
-                   dfi        = fi - fi_sns,
-                   dlambda    = lambda - lambda_sns;
+            vector v = SINS.getv();
+            double vsns      = indata[V_SNS],
+                   coursesns = degtorad(indata[COURSE_SNS]),
+                   vesns     = vsns * sin(coursesns),
+                   vnsns     = vsns * cos(coursesns),
+                   latit     = radtodeg(SINS.getlatit()),
+                   longit    = radtodeg(SINS.getlongit());
+//                   dlatit     = latit - latit_sns,
+//                   dlongit    = longit - longit_sns;
             fprintf(outfile,
-                    "%20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf\n",
-                    fi, lambda, fi_sns, lambda_sns, dfi, dlambda);
+                    "%20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf\n",
+                    vesns, vnsns, indata[LATIT_SNS], indata[LONGIT_SNS], indata[H_SNS],
+                    v.x,   v.y,   latit,             longit,             SINS.geth());
         }
     }
     printf("\n");

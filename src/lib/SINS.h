@@ -5,14 +5,15 @@ using namespace Vectors;
 
 class SINS_t {
 public:
-    SINS_t(double fi, double lambda, double h, vector V, basis B, double period);
+    SINS_t(double latit, double longit, double h, vector V, basis B, double period);
     void upd(vector acc_raw, vector omega_raw);
-    double getfi();
-    double getlambda();
+    double getlatit();
+    double getlongit();
     double geth();
+    vector getv();
 private:
-    double fi_,
-           lambda_,
+    double latit_,
+           longit_,
            h_;
     vector V_;
     basis B_;

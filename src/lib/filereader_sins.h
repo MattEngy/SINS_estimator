@@ -8,8 +8,11 @@ enum col_pos {
     ACC_X,
     ACC_Y,
     ACC_Z,
-    FI_SNS = 9,
-    LAMBDA_SNS = 10
+    V_SNS = 7,
+    COURSE_SNS = 8,
+    LATIT_SNS = 9,
+    LONGIT_SNS = 10,
+    H_SNS = 11
 };
 
 #define MAXLEN 1024

@@ -1,25 +1,29 @@
 #include "SINS.h"
 #include <math.h>
 
-SINS_t::SINS_t(double fi, double lambda, double h, vector V, basis B, double period) {
-    fi_     = fi;
-    lambda_ = lambda;
+SINS_t::SINS_t(double latit, double longit, double h, vector V, basis B, double period) {
+    latit_     = latit;
+    longit_ = longit;
     h_      = h;
     V_      = V;
     B_      = B;
     period_ = period;
 }
 
-double SINS_t::getfi() {
-    return fi_;
+double SINS_t::getlatit() {
+    return latit_;
 }
 
-double SINS_t::getlambda() {
-    return lambda_;
+double SINS_t::getlongit() {
+    return longit_;
 }
 
 double SINS_t::geth() {
     return h_;
+}
+
+vector SINS_t::getv() {
+    return V_;
 }
 
 void SINS_t::upd(vector acc_raw, vector omega_raw) {
@@ -29,10 +33,10 @@ void SINS_t::upd(vector acc_raw, vector omega_raw) {
     
     double rd = R + h_;    
     vector r(0, 0, rd);
-    vector U(0, Ud * cos(fi_), Ud * sin(fi_));
+    vector U(0, Ud * cos(latit_), Ud * sin(latit_));
     vector omegaL = vector(-V_.y / rd,
                            V_.x / rd,
-                           V_.x / rd * tan(fi_))
+                           V_.x / rd * tan(latit_))
                     + U;
     vector accI_L = acc_raw;
     accI_L.Globalize(B_);
@@ -42,8 +46,8 @@ void SINS_t::upd(vector acc_raw, vector omega_raw) {
 
     V_ = V_ + acc * period_;
     
-    lambda_ += V_.x / (rd * cos(fi_)) * period_;
-    fi_     += V_.y / rd * period_;
+    longit_ += V_.x / (rd * cos(latit_)) * period_;
+    latit_  += V_.y / rd * period_;
 //    h_      += V_.z * period_;
     
     //performing rotation by Puasson
