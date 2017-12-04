@@ -26,78 +26,52 @@ double radtodeg(double rad) {
 }
 
 int main(int argc, char **argv) {
-    if (argc == 2) {
-        basis B0;
-        B0.rotate(vector(0, degtorad(-1.954215945840), 0));
-        B0.rotate(vector(degtorad(-3.172652538105), 0, 0));
-        B0.rotate(vector(0, 0, -degtorad(87.123140486447)));
-        SINS_t SINS(degtorad(55.654100000000), degtorad(37.551900000000), 216.899993896484, vector(0, 0, 0), B0, UPD_PERIOD);
-        FILE *infile;
-        FILE *outfile;
-        infile  = fopen(argv[1], "r");
-        outfile = fopen("out.txt", "w");
-        int i;
-        const int linemaxlen = 1024;
-        char dummy[linemaxlen];
-        printf("Pre-scanning file ...\n");
-        for (i = 0; fgets(dummy, linemaxlen, infile) != NULL; ) {
-           i++;
-        }
-        printf("%d lines found\n", i);
-        progbar_t progb(i, PROGB_LEN);
-        progb.upd(0);
-        rewind(infile);
-        double indata[COLS_CNT];
-        for (i = 0; freadline(infile, indata, COLS_CNT); ) {
-            i++;
-            vector acc_raw  (indata[ACC_X] , indata[ACC_Y] , indata[ACC_Z] ),
-                   omega_raw(indata[GYRO_X], indata[GYRO_Y], indata[GYRO_Z]);
-            SINS.upd(acc_raw, omega_raw);
-            progb.upd(i);
-            if ((i % OUT_INTERVAL) == 0) {
-                double fi         = radtodeg(SINS.getfi()),
-                       lambda     = radtodeg(SINS.getlambda()),
-                       fi_sns     = indata[FI_SNS],
-                       lambda_sns = indata[LAMBDA_SNS],
-                       dfi        = fi - fi_sns,
-                       dlambda    = lambda - lambda_sns;
-                fprintf(outfile,
-                        "%20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf\n",
-                        fi, lambda, fi_sns, lambda_sns, dfi, dlambda);
-            }
-        }
-        printf("\n");
-        fclose(infile);
-        fclose(outfile);
-
-
-/////////////////
-/////////////////
-/////////////////
-/*	vector f_raw_L = f_raw_B;
-	f_raw_L.Globalize(B);
-
-	vector omega_L = omega_raw_B;
-	omega_L.Globalize(B);
-
-	vector U = U_I;
-	U.Localize(L_I);
-
-	vector omegaL;
-	// вычислить
-
-	double hR = position.z + R;
-	vector r(hR * cos(position.y) * cos(position.x),
-			 hR * cos(position.y) * sin(position.x),
-			 hR * sin(position.y));
-
-	vector acc = f_raw_B - vector::CrossProd((U + omegaL), V)
-						 - vector::CrossProd(U, vector::CrossProd(U, r)) + g;
-
-	V = V + acc * dt;
-	r = r + V * dt;
-
-	B.rotate(omega_L * dt);*/
+    if (argc != 2) {
+        printf("Wong amount of arguments! Exiting...\n");
+        return -1;
     }
+    basis B0;
+    B0.rotate(vector(0, degtorad(-1.954215945840), 0));
+    B0.rotate(vector(degtorad(-3.172652538105), 0, 0));
+    B0.rotate(vector(0, 0, -degtorad(87.123140486447)));
+    SINS_t SINS(degtorad(55.654100000000), degtorad(37.551900000000), 216.899993896484, vector(0, 0, 0), B0, UPD_PERIOD);
+    FILE *infile;
+    FILE *outfile;
+    infile  = fopen(argv[1], "r");
+    outfile = fopen("out.txt", "w");
+    int i;
+    const int linemaxlen = 1024;
+    char dummy[linemaxlen];
+    printf("Pre-scanning file ...\n");
+    for (i = 0; fgets(dummy, linemaxlen, infile) != NULL; ) {
+        i++;
+    }
+    printf("%d lines found\n", i);
+    progbar_t progb(i, PROGB_LEN);
+    progb.upd(0);
+    rewind(infile);
+    double indata[COLS_CNT];
+    for (i = 0; freadline(infile, indata, COLS_CNT); ) {
+        i++;
+        vector acc_raw  (indata[ACC_X] , indata[ACC_Y] , indata[ACC_Z] ),
+               omega_raw(indata[GYRO_X], indata[GYRO_Y], indata[GYRO_Z]);
+        SINS.upd(acc_raw, omega_raw);
+        progb.upd(i);
+        if ((i % OUT_INTERVAL) == 0) {
+            double fi         = radtodeg(SINS.getfi()),
+                   lambda     = radtodeg(SINS.getlambda()),
+                   fi_sns     = indata[FI_SNS],
+                   lambda_sns = indata[LAMBDA_SNS],
+                   dfi        = fi - fi_sns,
+                   dlambda    = lambda - lambda_sns;
+            fprintf(outfile,
+                    "%20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf\n",
+                    fi, lambda, fi_sns, lambda_sns, dfi, dlambda);
+        }
+    }
+    printf("\n");
+    fclose(infile);
+    fclose(outfile);
+
 	return 0;
 }

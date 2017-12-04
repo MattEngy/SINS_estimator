@@ -46,12 +46,18 @@ void SINS_t::upd(vector acc_raw, vector omega_raw) {
     fi_     += V_.y / rd * period_;
 //    h_      += V_.z * period_;
     
-    vector omegaB_L = omega_raw;
+    //performing rotation by Puasson
+    basis basomegaB({ {0,            omega_raw.z, -omega_raw.y},
+                      {-omega_raw.z,  0,            omega_raw.x},
+                      {omega_raw.y, -omega_raw.x,  0} }),
+          basomegaL({ {0,         omegaL.z, -omegaL.y},
+                      {-omegaL.z,  0,         omegaL.x},
+                      {omegaL.y, -omegaL.x,  0} });
+    B_ = B_ + (B_ * basomegaB - basomegaL * B_) * period_;
+
+
+/*    vector omegaB_L = omega_raw;
     omegaB_L.Globalize(B_);
     omegaB_L = omegaB_L - omegaL;
-    B_.rotate(omegaB_L * period_);
-/*   L_I_ = basis(vector(-sin(lambda),           cos(lambda),            0),
-                 vector(-sin(fi) * cos(lambda), -sin(fi) * sin(lambda), cos(fi)),
-                 vector(cos(fi) * cos(lambda),  cos(fi) * sin(lambda), sin(fi)));
-*/
+    B_.rotate(omegaB_L * period_);*/
 }
