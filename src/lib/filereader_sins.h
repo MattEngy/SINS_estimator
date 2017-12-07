@@ -12,7 +12,9 @@ enum col_pos {
     COURSE_SNS = 8,
     LATIT_SNS = 9,
     LONGIT_SNS = 10,
-    H_SNS = 11
+    H_SNS = 11,
+    VE_INS = 14,
+    VN_INS = 15
 };
 
 #define MAXLEN 1024

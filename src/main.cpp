@@ -68,9 +68,10 @@ int main(int argc, char **argv) {
 //                   dlatit     = latit - latit_sns,
 //                   dlongit    = longit - longit_sns;
             fprintf(outfile,
-                    "%20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf\n",
-                    vesns, vnsns, indata[LATIT_SNS], indata[LONGIT_SNS], indata[H_SNS],
-                    v.x,   v.y,   latit,             longit,             SINS.geth());
+                    "%20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf\n",
+                    vesns,    vnsns, indata[LATIT_SNS], indata[LONGIT_SNS], indata[H_SNS],
+                    indata[VE_INS], indata[VN_INS],
+                    v.x,      v.y,   latit,             longit,             SINS.geth());
         }
     }
     printf("\n");
