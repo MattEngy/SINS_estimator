@@ -3,5 +3,7 @@
 !*.h
 !*.cpp
 !*.c
+!*.py
 !/.gitignore
 !/Makefile
+
