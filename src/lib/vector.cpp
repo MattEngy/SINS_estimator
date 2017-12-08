@@ -133,6 +133,22 @@ namespace Vectors {
     vector vector::operator-(vector a) {
         return vector(x - a.x, y - a.y, z - a.z);
     }
+    
+    void vector::operator+=(vector a) {
+        x += a.x;
+        y += a.y;
+        z += a.z;
+    }
+
+    void vector::operator/=(vector a) {
+        x /= a.x;
+        y /= a.y;
+        z /= a.z;
+    }
+    
+    vector vector::operator*(vector a) {
+        return CrossProd((*this), a);
+    }
 
     char* vector::tostring() {
         char *str = new char[255];

@@ -87,6 +87,12 @@ namespace Vectors {
         k.Rotate_M(axis);
     }
 
+    void basis::transpond() {
+        (*this) = basis(vector(i.x, j.x, k.x),
+                        vector(j.x ,j.y, j.z),
+                        vector(k.x, k.y, k.z));
+    }
+
     char* basis::tostring() {
         char *str = new char[255];
         sprintf(str, "%s\n%s\n%s", i.tostring(),

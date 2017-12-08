@@ -28,6 +28,9 @@ namespace Vectors
         vector operator/(double a);
         vector operator+(vector a);
         vector operator-(vector a);
+        void operator+=(vector a);
+        void operator/=(vector a);
+        vector operator*(vector a);
         char* tostring();
     };
 }

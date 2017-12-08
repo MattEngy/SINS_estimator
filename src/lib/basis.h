@@ -13,6 +13,7 @@ namespace Vectors {
 
         vector &operator[](char index);
         void rotate(vector axis);
+        void transpond();
         basis operator*(basis b);
         basis operator*(double b);
         basis operator+(basis b);
