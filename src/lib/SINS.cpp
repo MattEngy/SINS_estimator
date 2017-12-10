@@ -10,6 +10,15 @@ SINS_t::SINS_t(double latit, double longit, double h, vector V, basis B, double 
     period_ = period;
 }
 
+SINS_t::SINS_t(double latit, double longit, double h, vector f, vector U, double period) {
+    latit_     = latit;
+    longit_ = longit;
+    h_      = h;
+    V_      = vector(0, 0, 0);
+    B_      . setout(f, U);
+    period_ = period;
+}
+
 double SINS_t::getlatit() {
     return latit_;
 }

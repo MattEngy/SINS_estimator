@@ -140,10 +140,10 @@ namespace Vectors {
         z += a.z;
     }
 
-    void vector::operator/=(vector a) {
-        x /= a.x;
-        y /= a.y;
-        z /= a.z;
+    void vector::operator/=(double a) {
+        x /= a;
+        y /= a;
+        z /= a;
     }
     
     vector vector::operator*(vector a) {

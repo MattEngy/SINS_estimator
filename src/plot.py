@@ -30,3 +30,4 @@ with open("out.txt") as f:
     plt.legend(loc='best')
     plt.xlabel('time, min')
     plt.savefig('plot.png')
+    plt.show()

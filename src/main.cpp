@@ -12,7 +12,8 @@ using namespace std;
 enum {
     COLS_CNT = 22,
     PROGB_LEN = 100,
-    OUT_INTERVAL = 100
+    OUT_INTERVAL = 100,
+    CAL_TIME = 60000
 };
 
 #define UPD_PERIOD 0.01
@@ -30,11 +31,6 @@ int main(int argc, char **argv) {
         printf("Wong amount of arguments! Exiting...\n");
         return -1;
     }
-    basis B0;
-    B0.rotate(vector(0, degtorad(-1.954215945840), 0));
-    B0.rotate(vector(degtorad(-3.172652538105), 0, 0));
-    B0.rotate(vector(0, 0, -degtorad(87.123140486447)));
-    SINS_t SINS(degtorad(55.654100000000), degtorad(37.551900000000), 216.899993896484, vector(0, 0, 0), B0, UPD_PERIOD);
     FILE *infile;
     FILE *outfile;
     infile  = fopen(argv[1], "r");
@@ -50,8 +46,22 @@ int main(int argc, char **argv) {
     progbar_t progb(i, PROGB_LEN);
     progb.upd(0);
     rewind(infile);
+    vector Ucal(0, 0, 0),
+           fcal = Ucal;
+    basis B0;
     double indata[COLS_CNT];
-    for (i = 0; freadline(infile, indata, COLS_CNT); ) {
+    for (i = 0; i <= CAL_TIME && freadline(infile, indata, COLS_CNT); ) {
+        i++;
+        fcal += vector(indata[ACC_X] , indata[ACC_Y] , indata[ACC_Z]);
+        Ucal += vector(indata[GYRO_X] , indata[GYRO_Y] , indata[GYRO_Z]);
+        progb.upd(i);
+    }
+    printf("\nCalibration finished at i = %d\n", i);
+/*    B0.rotate(vector(0, degtorad(-1.954215945840), 0));
+    B0.rotate(vector(degtorad(-3.172652538105), 0, 0));
+    B0.rotate(vector(0, 0, -degtorad(87.123140486447)));*/
+    SINS_t SINS(degtorad(indata[LATIT_SNS]), degtorad(indata[LONGIT_SNS]), indata[H_SNS], fcal / i, Ucal / i, UPD_PERIOD);
+    for (i; freadline(infile, indata, COLS_CNT); ) {
         i++;
         vector acc_raw  (indata[ACC_X] , indata[ACC_Y] , indata[ACC_Z] ),
                omega_raw(indata[GYRO_X], indata[GYRO_Y], indata[GYRO_Z]);

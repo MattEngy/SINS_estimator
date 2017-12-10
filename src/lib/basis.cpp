@@ -89,8 +89,17 @@ namespace Vectors {
 
     void basis::transpond() {
         (*this) = basis(vector(i.x, j.x, k.x),
-                        vector(j.x ,j.y, j.z),
-                        vector(k.x, k.y, k.z));
+                        vector(i.y ,j.y, k.y),
+                        vector(i.z, j.z, k.z));
+    }
+
+    void basis::setout(vector f, vector U) {
+        k = f;
+        k.Normalize();
+        i = U * f;
+        i.Normalize();
+        j = k * i;
+        transpond();
     }
 
     char* basis::tostring() {
