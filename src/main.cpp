@@ -5,18 +5,10 @@
 #include "lib/SINS.h"
 #include "lib/filereader_sins.h"
 #include "lib/progbar.h"
+#include "lib/params.h"
 
 using namespace Vectors;
 using namespace std;
-
-enum {
-    COLS_CNT = 22,
-    PROGB_LEN = 100,
-    OUT_INTERVAL = 100,
-    CAL_TIME = 60000
-};
-
-#define UPD_PERIOD 0.01
 
 double degtorad(double deg) {
     return deg / 180 * M_PI;
@@ -69,19 +61,24 @@ int main(int argc, char **argv) {
         progb.upd(i);
         if ((i % OUT_INTERVAL) == 0) {
             vector v = SINS.getv();
+            basis B = SINS.getb();
             double vsns      = indata[V_SNS],
                    coursesns = degtorad(indata[COURSE_SNS]),
                    vesns     = vsns * sin(coursesns),
                    vnsns     = vsns * cos(coursesns),
                    latit     = radtodeg(SINS.getlatit()),
-                   longit    = radtodeg(SINS.getlongit());
+                   longit    = radtodeg(SINS.getlongit()),
+                   courseins = radtodeg(vector::Angle(vector(0, 1, 0), B.j));
+                   if (B.j.x < 0) {
+                       courseins = 360 - courseins;
+                   }
 //                   dlatit     = latit - latit_sns,
 //                   dlongit    = longit - longit_sns;
             fprintf(outfile,
-                    "%20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf\n",
-                    vesns,    vnsns, indata[LATIT_SNS], indata[LONGIT_SNS], indata[H_SNS],
+                    "%20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf %20.10lf\n",
+                    vesns,    vnsns, vsns, indata[LATIT_SNS], indata[LONGIT_SNS], indata[H_SNS], indata[COURSE_SNS],
                     indata[VE_INS], indata[VN_INS],
-                    v.x,      v.y,   latit,             longit,             SINS.geth());
+                    v.x, v.y, latit, longit, SINS.geth(), courseins);
         }
     }
     printf("\n");

@@ -12,6 +12,7 @@ public:
     double getlongit();
     double geth();
     vector getv();
+    basis getb();
 private:
     double latit_,
            longit_,

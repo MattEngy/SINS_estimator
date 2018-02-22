@@ -35,6 +35,10 @@ vector SINS_t::getv() {
     return V_;
 }
 
+basis SINS_t::getb() {
+    return B_;
+}
+
 void SINS_t::upd(vector acc_raw, vector omega_raw) {
     double R = 6356863;
     vector g(0, 0, -9.80655);
@@ -60,7 +64,7 @@ void SINS_t::upd(vector acc_raw, vector omega_raw) {
 //    h_      += V_.z * period_;
     
     //performing rotation by Puasson
-    basis basomegaB({ {0,            omega_raw.z, -omega_raw.y},
+    basis basomegaB({ {0,            omega_raw.z, -omega_raw.y},//treated as transponded - dont know why!
                       {-omega_raw.z,  0,            omega_raw.x},
                       {omega_raw.y, -omega_raw.x,  0} }),
           basomegaL({ {0,         omegaL.z, -omegaL.y},
