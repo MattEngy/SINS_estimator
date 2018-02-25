@@ -12,12 +12,16 @@ public:
     double getlongit();
     double geth();
     vector getv();
+    vector getacc();
+    vector getomega();
     basis getb();
 private:
     double latit_,
            longit_,
            h_;
-    vector V_;
+    vector V_,
+           omega_L_,
+           acc_L_;
     basis B_;
     double period_;
 };

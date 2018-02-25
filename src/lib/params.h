@@ -1,10 +1,13 @@
 #pragma once
 
-#define COLS_CNT 22
+#define INP_COLS_CNT 22
 #define PROGB_LEN 100
-#define OUT_INTERVAL 100
-#define CAL_TIME 60000
-#define UPD_PERIOD 0.01
+#define OUT_FREQ 1
+#define CAL_TIME 600
+#define UPD_FREQ 100
+#define COR2_LPF_SENS 0.01
+#define COR2_CNT_THSD 100
+
 enum col_pos {
     GYRO_X = 0,
     GYRO_Y,

@@ -1,4 +1,4 @@
-LIB=src/lib/vector.cpp src/lib/basis.cpp src/lib/SINS.cpp
+LIB=src/lib/vector.cpp src/lib/basis.cpp src/lib/SINS.cpp src/lib/LPF.cpp
 
 filereader:
 		g++ src/test/filereader.cpp -o filereader.out
