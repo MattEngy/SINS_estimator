@@ -35,6 +35,10 @@ vector SINS_t::getv() {
     return V_;
 }
 
+void SINS_t::setv(vector v) {
+    V_ = v;
+}
+
 vector SINS_t::getacc() {
     return acc_L_;
 }
@@ -84,4 +88,28 @@ void SINS_t::upd(vector acc_raw, vector omega_raw) {
     omegaB_L.Globalize(B_);
     omegaB_L = omegaB_L - omegaL;
     B_.rotate(omegaB_L * period_);*/
+}
+
+float SINS_t::getpitch() {
+    vector bjbuf = B_.j;
+    bjbuf.z = 0;
+    float pitchabs = vector::Angle(B_.j, bjbuf);
+    if (B_.j.z < 0) {
+        return -pitchabs;
+    }
+    return pitchabs;
+}
+
+float SINS_t::getroll() {
+    vector bjbuf = B_.j;
+    bjbuf.z = 0;
+    vector ibuf = vector::CrossProd(bjbuf, B_.j);
+    if (B_.j.z < 0) {
+        ibuf = vector(0, 0, 0) - ibuf;
+    }
+    float rollabs = vector::Angle(B_.i, ibuf);
+    if (B_.i.z < 0) {
+        return rollabs;
+    }
+    return -rollabs;
 }

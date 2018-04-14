@@ -12,9 +12,12 @@ public:
     double getlongit();
     double geth();
     vector getv();
+    void setv(vector v);
     vector getacc();
     vector getomega();
     basis getb();
+    float getroll();
+    float getpitch();
 private:
     double latit_,
            longit_,

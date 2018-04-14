@@ -5,8 +5,11 @@
 #define OUT_FREQ 1
 #define CAL_TIME 600
 #define UPD_FREQ 100
-#define COR2_LPF_SENS 0.01
-#define COR2_CNT_THSD 100
+#define COR2_COURSE_LPF_SENS 0.005
+#define COR2_CNT_THSD 500
+#define COR_COURSE_LPF_SENS 0.1
+#define COR_ACC_LPF_SENS 0.05
+#define COR_CNT_THSD 4
 
 enum col_pos {
     GYRO_X = 0,
